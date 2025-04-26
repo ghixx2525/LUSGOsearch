@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>LUSGOsearch - Consulta de Cobertura</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #4CAF50;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, select, button {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #resultado {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #555;
+    }
+
+    .operadora-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .operadora-option img {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">LUSGOsearch</div>
+    <h2>Consulta de Cobertura</h2>
+    <form id="formulario">
+      <select name="operadora" required>
+        <option value="">Escolher Operadora</option>
+        <option value="NOS">NOS 🟣</option>
+        <option value="Vodafone">Vodafone 🔴</option>
+        <option value="MEO">MEO 🔵</option>
+      </select>
+
+      <input type="text" name="codigoPostal" placeholder="Código Postal" required>
+
+      <input type="text" name="morada" placeholder="Morada" required>
+
+      <input type="text" name="porta" placeholder="Número da Porta" required>
+
+      <input type="text" name="telemovel" placeholder="Telemóvel" required>
+
+      <button type="submit">Consultar Cobertura</button>
+    </form>
+
+    <h3 id="resultado"></h3>
+  </div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzmFKbAn7tbUcfjcQiHEQ2yA1MXiL3IJ0dE0MrEQgJvc3Sc4Z0RqpDzZAi0vuPuj0DRlA/exec';
+
+    document.getElementById('formulario').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'text/plain'
+        }
+      })
+      .then(response => response.text())
+      .then(result => {
+        document.getElementById('resultado').innerText = "Resultado: " + result;
+      })
+      .catch(error => {
+        document.getElementById('resultado').innerText = "Erro ao receber resultado.";
+      });
+    });
+  </script>
+</body>
+</html>
